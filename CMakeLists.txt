@@ -23,3 +23,5 @@ set(SOURCE_FILES
         TS_ncurses.hpp)
 
 add_executable(Flowman ${SOURCE_FILES})
+link_directories(/usr/local/lib)
+target_link_libraries(Flowman -lcurses -lncurses -lboost_thread -lboost_system)
