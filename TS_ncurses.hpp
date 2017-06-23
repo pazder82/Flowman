@@ -38,7 +38,7 @@ public:
     int endwin () { LOCK; return ::endwin(); }
 	WINDOW * newwin (int vsize, int hsize ,int voffset, int hoffset) { LOCK; return ::newwin(vsize, hsize, voffset, hoffset); }
 	int wborder (WINDOW * win , chtype ch1,chtype ch2, chtype ch3, chtype ch4, chtype ch5, chtype ch6, chtype ch7, chtype ch8) { LOCK; return ::wborder(win, ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8); }
-	int init_pair (NCURSES_PAIRS_T pair, NCURSES_COLOR_T fgcolor,NCURSES_COLOR_T bgcolor) { LOCK; return ::init_pair(pair, fgcolor, bgcolor); }
+	int init_pair (int pair, NCURSES_COLOR_T fgcolor,NCURSES_COLOR_T bgcolor) { LOCK; return ::init_pair(pair, fgcolor, bgcolor); }
 	int mwattron (WINDOW * win, int a) { LOCK; return ::wattron(win, a); }
 	int waddch (WINDOW * win, const chtype cht) { LOCK; return ::waddch(win, cht); }
 	int mwattroff (WINDOW * win, int a) { LOCK; return ::wattroff(win, a); }

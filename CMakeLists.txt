@@ -24,4 +24,4 @@ set(SOURCE_FILES
 
 add_executable(Flowman ${SOURCE_FILES})
 link_directories(/usr/local/lib)
-target_link_libraries(Flowman -lcurses -lncurses -lboost_thread -lboost_system)
+target_link_libraries(Flowman -lcursesw -lncursesw -lboost_thread -lboost_system)

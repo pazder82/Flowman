@@ -13,6 +13,7 @@
 
 #include <curses.h>
 #include "Desk.hpp"
+#include "iostream"
 
 using namespace std;
 
@@ -60,15 +61,17 @@ void Desk::init_squares() {
 	// 2) there is no dead end tunnel
 	unsigned short total_squares = (hsize * vsize);
 	unsigned short wall_squares = get_num_of_squares_of_type(Item::wall);
-	square_coord_t sc = { { hsize/2/2, vsize/2/2 } }; // start in the center of the first quadrant
-	while ((wall_squares*100/total_squares > MAX_WALL_PERCENTS_ALLOWED) || (number_of_neighbors(Item::food, sc) < 2)) {
-		sc = get_next_tunnel_square(sc);
+	square_coord_t sc = { { hsize/2, vsize/2 } }; // start in the center of the first quadrant
+	square_coord_t sc_old = sc;
+	while ((wall_squares*100/total_squares > MAX_WALL_PERCENTS_ALLOWED) || (number_of_neighbors(Item::food, sc_old) < 2)) {
 		squares[sc.at(0)][sc.at(1)] = items.at(Item::food);
 		squares[hsize - sc.at(0) - 1][sc.at(1)] = items.at(Item::food);
 		squares[sc.at(0)][vsize - sc.at(1) - 1] = items.at(Item::food);
 		squares[hsize - sc.at(0) - 1][vsize - sc.at(1) - 1] = items.at(Item::food);
 		wall_squares = get_num_of_squares_of_type(Item::wall);
 		draw();
+		sc_old = sc;
+        sc = get_next_tunnel_square(sc);
 	}
 }
 
@@ -146,7 +149,7 @@ int Desk::number_of_neighbors(const Item::item_type_t it, const square_coord_t s
 	for (int i = -1; i < 2; i++) {
 		for (int j = -1; j < 2; j++) {
 			if ((sc.at(0) + i >= 0) && (sc.at(0) + i < get_hsize()) && (sc.at(1) + j >= 0) && (sc.at(1) + j < get_vsize()) && 
-					(i != j != 0) && ((i == 0) || (j == 0)) && (squares.at(sc.at(0)+i).at(sc.at(1)+j).get_item_type() == it)) {
+					(((i == 0) && (j != 0)) || ((j == 0) && (i != 0))) && (squares.at(sc.at(0)+i).at(sc.at(1)+j).get_item_type() == it)) {
 				ret++;
 			}
 		}
