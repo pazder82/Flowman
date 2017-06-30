@@ -32,6 +32,9 @@ private:
 	static std::random_device generator;
 	bool check_next_position(const Character::direction_t dir) const;
 	virtual void move_character(const direction_t dir) override;
+
+protected:
+	unsigned int get_revive_time() const override;
 };
 
 #endif /* CHHACKER_HPP */

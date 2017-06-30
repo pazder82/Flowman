@@ -10,9 +10,13 @@ set(SOURCE_FILES
         ChFlowman.hpp
         ChHacker.cpp
         ChHacker.hpp
+        ChBonus.cpp
+        ChBonus.hpp
         common.hpp
         Desk.cpp
         Desk.hpp
+        LogWindow.cpp
+        LogWindow.hpp
         DrawableObject.cpp
         DrawableObject.hpp
         Item.cpp
@@ -20,7 +24,7 @@ set(SOURCE_FILES
         main.cpp
         nc_exception.hpp
         TS_ncurses.cpp
-        TS_ncurses.hpp)
+        TS_ncurses.hpp )
 
 add_executable(Flowman ${SOURCE_FILES})
 link_directories(/usr/local/lib)

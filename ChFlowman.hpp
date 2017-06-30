@@ -15,18 +15,26 @@
 #define CHFLOWMAN_HPP
 
 #include "Character.hpp"
+#include "LogWindow.hpp"
 
 
 class ChFlowman : public Character {
 public:
 	RDC(ChFlowman);
-	ChFlowman(const Item::item_type_t it, Desk& desk, const float speed_multiplier) : Character(it, desk, speed_multiplier) {}
+	ChFlowman(const Item::item_type_t it, Desk& desk, LogWindow& logWindow, const float speed_multiplier)
+			: logWindow(logWindow), Character(it, desk, speed_multiplier) {}
     virtual ~ChFlowman();
 	void report_pressed_key(const int keyp);
 
 private:
 	Character::direction_t get_next_position() const override; // return new position of character in next step
 	virtual void process_new_square() override;
+	LogWindow& logWindow;
+
+protected:
+	unsigned int get_revive_time() const override;
+
+private:
 
 	int keyp = 0;
 	

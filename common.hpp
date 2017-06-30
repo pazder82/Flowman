@@ -23,6 +23,7 @@
 const unsigned int GAMESPEED = 200; // ms between each move
 const unsigned int HACKERREVIVETIME = 30;  // GAMESPEED*REVIVETIME*speed ms to revive dead hacker
 const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to revive dead flowman
+const unsigned int BONUSREVIVETIME = 300; // GAMESPEED*REVIVETIME*speed ms to revive dead bonus
 
 /* Types */
 typedef std::array<int,2> square_coord_t;

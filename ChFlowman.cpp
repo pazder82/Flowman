@@ -12,6 +12,8 @@
  */
 
 #include "ChFlowman.hpp"
+#include "ChHacker.hpp"
+#include "ChBonus.hpp"
 
 ChFlowman::~ChFlowman() {
 }
@@ -51,9 +53,27 @@ void ChFlowman::process_new_square() {
 		// check, if some other character is not at the same position
 		// if so, flowman (this) must die
 		if ((ch->get_pos() == this->get_pos()) && (ch != this)) {
-			this->kill(Character::revive);
+			// if found, check its type.
+			// If it is hacker, kill Flowman
+			if (dynamic_cast<ChHacker*>(ch)) {
+				this->kill(Character::revive);
+				logWindow.update_comment("Killed by hacker");
+			}
+			// If it is food, kill it
+			if (dynamic_cast<ChBonus*>(ch)) {
+				ch->kill(Character::revive);
+				logWindow.update_comment("Ate bonus");
+			}
 		}
 	}
 	desk.set_item_type(Item::empty, get_hpos(), get_vpos());
+}
+
+/**
+ * Return revive time of Flowman
+ * @return
+ */
+unsigned int ChFlowman::get_revive_time() const {
+	return FLOWMANREVIVETIME;
 }
 

@@ -43,7 +43,7 @@ void Character::move_character(const direction_t dir) {
 		sc = {{ 0, 1 }};
 	}else if (dir == left) {
 		sc = {{ -1, 0 }};
-	}else { // if (dir == right)
+	}else if (dir == right) {
 		sc = {{ 1, 0 }};
 	}
 	if (desk.is_valid_square(hpos+sc.at(0), vpos+sc.at(1))) {
@@ -71,7 +71,7 @@ void Character::kill(const typeofdeath_t tod) {
  * Character's main loop
  */
 void Character::run_i() {
-	int revive_count = (dynamic_cast<ChFlowman*>(this)?FLOWMANREVIVETIME:HACKERREVIVETIME);
+	int revive_count = get_revive_time();
 	while(!quit) {
 		if (tod == alive) {
 			move_character(get_next_position());
@@ -79,7 +79,7 @@ void Character::run_i() {
 		}else if (tod == revive) {
 			if (revive_count <= 0) {
 				lock_guard<mutex> lck(mtx);
-				revive_count = (dynamic_cast<ChFlowman*>(this)?FLOWMANREVIVETIME:HACKERREVIVETIME);
+				revive_count = get_revive_time();
 				tod = alive;
 				restart_position();
 			}else {

@@ -24,7 +24,7 @@ extern TS_ncurses tsn;
 
 class Character {
 public:
-	enum direction_t { left, up, right, down };
+	enum direction_t { left, up, right, down, none };
 	enum typeofdeath_t { norevive, revive, alive };
 
 	RDC(Character);
@@ -46,6 +46,7 @@ protected:
 	virtual direction_t get_next_position() const = 0; // return new position of character in next step
 	virtual void process_new_square() = 0; // let character know it moved to the new square so it has to be processed
 	virtual void move_character(const direction_t dir);
+    virtual unsigned int get_revive_time() const = 0; // return revive time of character
 	Desk& desk; /**< Associated Desk */
 	unsigned short hpos = 0; /**< Character horizontal position */
 	unsigned short vpos = 0; /**< Character vertical position */

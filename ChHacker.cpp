@@ -79,3 +79,11 @@ void ChHacker::move_character(const direction_t dir) {
 	Character::move_character(dir);
 }
 
+/**
+ * Return Hacker revive time
+ * @return
+ */
+unsigned int ChHacker::get_revive_time() const {
+	return HACKERREVIVETIME;
+}
+

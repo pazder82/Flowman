@@ -22,6 +22,8 @@
 #include "Character.hpp"
 #include "ChFlowman.hpp"
 #include "ChHacker.hpp"
+#include "ChBonus.hpp"
+#include "LogWindow.hpp"
 
 using namespace std;
 
@@ -61,16 +63,18 @@ int main(int argc, char** argv) {
 	tsn.ungetch('a');
 	tsn.mgetch();
 
-	// Create desk object
+	// Create desk object and LogWindow
 	Desk desk(DESKHSIZE, DESKVSIZE, 0, 0);
+	LogWindow logWindow(DESKHSIZE, 1, 0, DESKVSIZE);
 
 	// Create Character objects
-	ChFlowman flowman(Item::flowman, desk, 1);
+	ChFlowman flowman(Item::flowman, desk, logWindow, 1);
 	ChHacker hacker1(Item::hacker, desk, 0.5);
 	ChHacker hacker2(Item::hacker, desk, 0.8);
 	ChHacker hacker3(Item::hacker, desk, 1);
 	ChHacker hacker4(Item::hacker, desk, 1);
 	ChHacker hacker5(Item::hacker, desk, 1.2);
+    ChBonus food(Item::bonus, desk);
 
 	// Fill Character vector
 	Character::chvector.push_back(&flowman);
@@ -79,6 +83,7 @@ int main(int argc, char** argv) {
 	Character::chvector.push_back(&hacker3);
 	Character::chvector.push_back(&hacker4);
 	Character::chvector.push_back(&hacker5);
+	Character::chvector.push_back(&food);
 	for (Character* ch : Character::chvector) {
 		ch->run(); // start threads
 	}
@@ -89,6 +94,7 @@ int main(int argc, char** argv) {
             // Start/restart game - kill all characters with no revive before we init the desk
 			for (Character* ch : Character::chvector) ch->kill(Character::norevive);
 			desk.init_squares();
+			logWindow.draw();
 			for (Character* ch : Character::chvector) ch->kill(Character::revive);
         } else if ((keyp == KEY_LEFT) || (keyp == KEY_RIGHT) || (keyp == KEY_UP) || (keyp == KEY_DOWN)) {
             // Move Flowman
