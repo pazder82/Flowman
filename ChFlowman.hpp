@@ -27,12 +27,12 @@ public:
 	void report_pressed_key(const int keyp);
 
 private:
-	Character::direction_t get_next_position() const override; // return new position of character in next step
+	virtual Character::direction_t get_next_position() override; // return new position of character in next step
 	virtual void process_new_square() override;
 	LogWindow& logWindow;
 
 protected:
-	unsigned int get_revive_time() const override;
+	virtual unsigned int get_revive_time() const override;
 
 private:
 

@@ -14,13 +14,12 @@
 #include "ChHacker.hpp"
 #include "ChFlowman.hpp"
 
-std::random_device ChHacker::generator;
 
 /**
  * Get next position for move
  * @return 
  */
-Character::direction_t ChHacker::get_next_position() const{
+Character::direction_t ChHacker::get_next_position() {
 	square_coord_t newdirsc;
 	Character::direction_t newdir = dir;
 	uniform_int_distribution<int> randnewdirdist(0, 3);
@@ -58,8 +57,9 @@ void ChHacker::process_new_square() {
 		// check, if some other character is not at the same position
 		if ((ch->get_pos() == this->get_pos()) && (ch != this)) {
 			// if found, check its type. If it is flowman, kill him	
-			if (dynamic_cast<ChFlowman*>(ch)) {
-				ch->kill(Character::revive);
+			if (dynamic_cast<ChFlowman*>(ch) && ch->is_alive()) {
+				ch->kill(Character::deadrevive);
+				logWindow.update_comment("Killed by hacker");
 			}
 		}
 	}
@@ -72,6 +72,7 @@ void ChHacker::restart_position() {
 	uniform_int_distribution<unsigned short> randhdist(0, desk.get_hsize());
 	uniform_int_distribution<unsigned short> randvdist(0, desk.get_vsize());
 	while (!desk.is_valid_square(hpos = randhdist(generator), vpos = randvdist(generator)));
+    logWindow.update_comment(std::string("Hacker restarted at ") + std::to_string(hpos) + std::string(",") + std::to_string(vpos));
 }
 
 void ChHacker::move_character(const direction_t dir) {

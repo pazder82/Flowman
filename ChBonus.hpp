@@ -6,19 +6,21 @@
 #define FLOWMAN_CHBONUS_H
 
 #include "Character.hpp"
+#include "LogWindow.hpp"
 
 class ChBonus : public Character{
 public:
     RDC(ChBonus);
-    ChBonus(const Item::item_type_t it, Desk& desk) : Character(it, desk, 1) {}
+    ChBonus(const Item::item_type_t it, Desk& desk, LogWindow& logWindow) : logWindow(logWindow), Character(it, desk, 1) {}
     virtual ~ChBonus() { }
     void restart_position() override;
 private:
-    static std::random_device generator;
-    direction_t get_next_position() const override;
-    void process_new_square() override {};
+    virtual direction_t get_next_position() override;
+    virtual void process_new_square() override;
+    virtual unsigned int get_revive_time() const override;
+    LogWindow& logWindow;
 
-    unsigned int get_revive_time() const override;
+    unsigned int ttl;
 };
 
 

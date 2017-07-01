@@ -31,7 +31,7 @@ void ChFlowman::report_pressed_key(const int keyp) {
  * Get next position of this character in the next cycle
  * @return Relative position in next cycle
  */
-Character::direction_t ChFlowman::get_next_position() const {
+Character::direction_t ChFlowman::get_next_position() {
 	if (keyp == KEY_LEFT) {
 		return Character::left;
 	}else if (keyp == KEY_RIGHT) {
@@ -55,13 +55,13 @@ void ChFlowman::process_new_square() {
 		if ((ch->get_pos() == this->get_pos()) && (ch != this)) {
 			// if found, check its type.
 			// If it is hacker, kill Flowman
-			if (dynamic_cast<ChHacker*>(ch)) {
-				this->kill(Character::revive);
+			if (dynamic_cast<ChHacker*>(ch) && ch->is_alive()) {
+				this->kill(Character::deadrevive);
 				logWindow.update_comment("Killed by hacker");
 			}
 			// If it is food, kill it
-			if (dynamic_cast<ChBonus*>(ch)) {
-				ch->kill(Character::revive);
+			if (dynamic_cast<ChBonus*>(ch) && ch->is_alive()) {
+				ch->kill(Character::deadrevive);
 				logWindow.update_comment("Ate bonus");
 			}
 		}

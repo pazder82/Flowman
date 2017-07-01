@@ -60,10 +60,10 @@ void Character::move_character(const direction_t dir) {
  * set type of death
  * @param tod
  */
-void Character::kill(const typeofdeath_t tod) {
-	if (tod == revive || tod == norevive) {
+void Character::kill(const lifestatus_t tod) {
+	if (tod == deadrevive || tod == deadnorevive) {
 		lock_guard<mutex> lck(mtx);
-		this->tod = tod;
+		this->lifestatus = tod;
 	}
 }
 
@@ -73,14 +73,14 @@ void Character::kill(const typeofdeath_t tod) {
 void Character::run_i() {
 	int revive_count = get_revive_time();
 	while(!quit) {
-		if (tod == alive) {
+		if (lifestatus == alive) {
 			move_character(get_next_position());
 			process_new_square(); // call hook
-		}else if (tod == revive) {
+		}else if (lifestatus == deadrevive) {
 			if (revive_count <= 0) {
 				lock_guard<mutex> lck(mtx);
 				revive_count = get_revive_time();
-				tod = alive;
+				lifestatus = alive;
 				restart_position();
 			}else {
 				revive_count -= 1;
@@ -128,4 +128,12 @@ void Character::restart_position() {
 	vpos = sc.at(1);
 	desk.draw_item(it, hpos, vpos); // draw item into start position
 	desk.refresh_win();
+}
+
+/**
+ * Return true, if character is in lifestatus_t == alive
+ * @return
+ */
+bool Character::is_alive() const {
+	return lifestatus == Character::alive;
 }

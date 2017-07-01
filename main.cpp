@@ -13,7 +13,6 @@
 
 #include <cstdlib>
 #include <ncurses.h>
-#include <curses.h>
 #include <boost/thread/thread.hpp>
 #include "common.hpp"
 #include "Item.hpp"
@@ -69,12 +68,12 @@ int main(int argc, char** argv) {
 
 	// Create Character objects
 	ChFlowman flowman(Item::flowman, desk, logWindow, 1);
-	ChHacker hacker1(Item::hacker, desk, 0.5);
-	ChHacker hacker2(Item::hacker, desk, 0.8);
-	ChHacker hacker3(Item::hacker, desk, 1);
-	ChHacker hacker4(Item::hacker, desk, 1);
-	ChHacker hacker5(Item::hacker, desk, 1.2);
-    ChBonus food(Item::bonus, desk);
+	ChHacker hacker1(Item::hacker, desk, logWindow, 0.5);
+	ChHacker hacker2(Item::hacker, desk, logWindow, 0.8);
+	ChHacker hacker3(Item::hacker, desk, logWindow, 1);
+	ChHacker hacker4(Item::hacker, desk, logWindow, 1);
+	ChHacker hacker5(Item::hacker, desk, logWindow, 1.2);
+    ChBonus food(Item::bonus, desk, logWindow);
 
 	// Fill Character vector
 	Character::chvector.push_back(&flowman);
@@ -91,11 +90,11 @@ int main(int argc, char** argv) {
     int keyp = KEY_F(2); // F2 (re)starts the game
     while (keyp != KEY_F(10)) {
         if (keyp == KEY_F(2)) { 
-            // Start/restart game - kill all characters with no revive before we init the desk
-			for (Character* ch : Character::chvector) ch->kill(Character::norevive);
+            // Start/restart game - kill all characters with no deadrevive before we init the desk
+			for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
 			desk.init_squares();
 			logWindow.draw();
-			for (Character* ch : Character::chvector) ch->kill(Character::revive);
+			for (Character* ch : Character::chvector) ch->kill(Character::deadrevive);
         } else if ((keyp == KEY_LEFT) || (keyp == KEY_RIGHT) || (keyp == KEY_UP) || (keyp == KEY_DOWN)) {
             // Move Flowman
 			flowman.report_pressed_key(keyp);
