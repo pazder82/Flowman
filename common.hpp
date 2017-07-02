@@ -25,6 +25,7 @@ const unsigned int HACKERREVIVETIME = 30;  // GAMESPEED*REVIVETIME*speed ms to d
 const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead flowman
 const unsigned int BONUSREVIVETIME = 100; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead bonus
 const unsigned int BONUSLIFETIME = 100; // GAMESPEED*LIFETIME*speed ms until bonus disappears
+const unsigned int WEAKHACKERLIFETIME = 50; // GAMESPEED*LIFETIME*speed ms until weak hacker turns into common hacker
 
 /* Types */
 typedef std::array<int,2> square_coord_t;

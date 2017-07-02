@@ -16,7 +16,8 @@ public:
     void restart_position() override;
 private:
     virtual direction_t get_next_position() override;
-    virtual void process_new_square() override;
+    virtual void process_new_square() override {};
+    void update_character_status() override;
     virtual unsigned int get_revive_time() const override;
     LogWindow& logWindow;
 

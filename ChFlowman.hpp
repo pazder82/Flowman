@@ -30,8 +30,7 @@ private:
 	virtual Character::direction_t get_next_position() override; // return new position of character in next step
 	virtual void process_new_square() override;
 	LogWindow& logWindow;
-
-protected:
+	void update_character_status() override {};
 	virtual unsigned int get_revive_time() const override;
 
 private:

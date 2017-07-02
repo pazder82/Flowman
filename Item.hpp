@@ -26,7 +26,7 @@ extern TS_ncurses tsn;
 
 class Item {
     public:
-        enum item_type_t { empty, food, wall, hacker, weakhacker, flowman, bonus };
+        enum item_type_t { empty, food, wall, hacker, weakhacker, endingweakhacker, flowman, bonus };
 
         Item() = default;
         Item(const Item&) = default;

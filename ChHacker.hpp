@@ -25,15 +25,20 @@ public:
 			: logWindow(logWindow), Character(it, desk, speed_multiplier) {}
     virtual ~ChHacker() = default;
 	void restart_position() override;
-
+    void turn_into_weak_hacker();
 
 private:
 	virtual Character::direction_t get_next_position() override;
 	virtual void process_new_square() override;
+    void update_character_status() override;
+    void turn_into_common_hacker();
+    void turn_into_endingweak_hacker();
+
 	direction_t dir; /**< current direction of character */
 	bool check_next_position(const Character::direction_t dir) const;
 	virtual void move_character(const direction_t dir) override;
 	LogWindow& logWindow;
+    unsigned int ttl; /**< Time to live of weak hacker */
 
 protected:
 	virtual unsigned int get_revive_time() const override;

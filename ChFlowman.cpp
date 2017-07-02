@@ -50,19 +50,32 @@ Character::direction_t ChFlowman::get_next_position() {
  */
 void ChFlowman::process_new_square() {
 	for (auto ch : chvector) {
-		// check, if some other character is not at the same position
-		// if so, flowman (this) must die
+		// Check, if some other character is not alive at the same position
+		// if so, check whether it is weak hacker or common hacker.
+		// If it is common hacker, flowman (this) must die, if it is weak hacker, hacker must die.
 		if ((ch->get_pos() == this->get_pos()) && (ch != this)) {
 			// if found, check its type.
-			// If it is hacker, kill Flowman
 			if (dynamic_cast<ChHacker*>(ch) && ch->is_alive()) {
-				this->kill(Character::deadrevive);
-				logWindow.update_comment("Killed by hacker");
+                // It is hacker, check, whether it is common hacker or weak hacker and then kill one or another accordingly
+				if (ch->get_item_type() == Item::hacker) {
+					// common hacker -> Flowman will die
+					this->kill(Character::deadrevive);
+					logWindow.update_comment("Killed by hacker");
+				}else {
+					// weak hacker -> Hacker will die
+					ch->kill(Character::deadrevive);
+					logWindow.update_comment("Hacker killed");
+				}
 			}
-			// If it is food, kill it
 			if (dynamic_cast<ChBonus*>(ch) && ch->is_alive()) {
+				// it is food -> eat it (== kill it) and turn all hackers into weak hackers
 				ch->kill(Character::deadrevive);
 				logWindow.update_comment("Ate bonus");
+                for (auto ch2 : chvector) {
+                    if (dynamic_cast<ChHacker*>(ch2) && ch2->is_alive()) {
+                        dynamic_cast<ChHacker*>(ch2)->turn_into_weak_hacker();
+                    }
+                }
 			}
 		}
 	}

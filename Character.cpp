@@ -86,6 +86,7 @@ void Character::run_i() {
 				revive_count -= 1;
 			}
 		}
+        update_character_status(); // call hook
 		std::this_thread::sleep_for(std::chrono::milliseconds(speed));
 	}
 }
@@ -136,4 +137,12 @@ void Character::restart_position() {
  */
 bool Character::is_alive() const {
 	return lifestatus == Character::alive;
+}
+
+/**
+ * Change item_type of character to newit
+ * @param newit
+ */
+void Character::change_item_type(Item::item_type_t newit) {
+	it = newit;
 }

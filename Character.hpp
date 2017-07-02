@@ -40,14 +40,17 @@ public:
 	unsigned short get_vpos() const { return vpos; }
 	square_coord_t get_pos() const { return { { hpos, vpos } }; }
 	Item::item_type_t get_item_type() const { return it; }
+	int get_speed() const { return speed; }
 	bool joinable() const;
 	static vector<Character*> chvector; /**< Vector of references to all Character objects created */
 
 protected:
-	virtual direction_t get_next_position() = 0; // return new position of character in next step
-	virtual void process_new_square() = 0; // let character know it moved to the new square so it has to be processed
+	virtual direction_t get_next_position() = 0; /**< return new position of character in next step */
+	virtual void process_new_square() = 0; /**< let character know it moved to the new square so it has to be processed */
+	virtual void update_character_status() = 0; /**< character has to update its status if necessary */
 	virtual void move_character(const direction_t dir);
-    virtual unsigned int get_revive_time() const = 0; // return deadrevive time of character
+    virtual unsigned int get_revive_time() const = 0; /** return deadrevive time of character */
+    void change_item_type(Item::item_type_t it); /** change item type of character */
 	Desk& desk; /**< Associated Desk */
 	unsigned short hpos = 0; /**< Character horizontal position */
 	unsigned short vpos = 0; /**< Character vertical position */

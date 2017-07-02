@@ -28,7 +28,7 @@ unsigned int ChBonus::get_revive_time() const {
 /**
  * Countdown the bonus time to live. When it is zero, the bonus dies.
  */
-void ChBonus::process_new_square() {
+void ChBonus::update_character_status() {
     ttl--;
     if (ttl == 0) {
         kill(deadrevive);
