@@ -16,13 +16,14 @@
 
 #include "Character.hpp"
 #include "LogWindow.hpp"
+#include "GameStatus.hpp"
 
 
 class ChHacker : public Character {
 public:
 	RDC(ChHacker);
-	ChHacker(const Item::item_type_t it, Desk& desk, LogWindow& logWindow, const float speed_multiplier)
-			: logWindow(logWindow), Character(it, desk, speed_multiplier) {}
+	ChHacker(const Item::item_type_t it, Desk& desk, LogWindow& logWindow, GameStatus& gameStatus, const float speed_multiplier)
+			: logWindow(logWindow), gameStatus(gameStatus), Character(it, desk, speed_multiplier) {}
     virtual ~ChHacker() = default;
 	void restart_position() override;
     void turn_into_weak_hacker();
@@ -38,6 +39,7 @@ private:
 	bool check_next_position(const Character::direction_t dir) const;
 	virtual void move_character(const direction_t dir) override;
 	LogWindow& logWindow;
+    GameStatus& gameStatus;
     unsigned int ttl; /**< Time to live of weak hacker */
 
 protected:

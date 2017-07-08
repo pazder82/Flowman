@@ -61,10 +61,14 @@ void ChHacker::process_new_square() {
                 // It is alive Flowmon. If I am common hacker, kill Flowman, if I am weak hacker, kill me.
                 if (get_item_type() == Item::hacker) {
                     ch->kill(Character::deadrevive);
-                    logWindow.update_comment("Killed by hacker");
+					gameStatus.dec_life();
+                    logWindow.update_lives(gameStatus.get_lives());
+					logWindow.update_comment("Killed by hacker");
                 } else{
                     kill(Character::deadrevive);
-                    logWindow.update_comment("Hacker killed");
+                    gameStatus.inc_score(SCORE_FOR_HACKER);
+                    logWindow.update_score(gameStatus.get_score());
+					logWindow.update_comment("Hacker killed");
                 }
 			}
 		}

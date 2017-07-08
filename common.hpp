@@ -26,6 +26,9 @@ const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to de
 const unsigned int BONUSREVIVETIME = 100; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead bonus
 const unsigned int BONUSLIFETIME = 100; // GAMESPEED*LIFETIME*speed ms until bonus disappears
 const unsigned int WEAKHACKERLIFETIME = 50; // GAMESPEED*LIFETIME*speed ms until weak hacker turns into common hacker
+const unsigned int STARTING_LIVES = 3; // Number of lives in the beginning
+const unsigned int SCORE_FOR_FOOD = 1; // Score bonus for eaten food
+const unsigned int SCORE_FOR_HACKER = 25; // Score bonus for eaten hacker
 
 /* Types */
 typedef std::array<int,2> square_coord_t;

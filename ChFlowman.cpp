@@ -60,11 +60,15 @@ void ChFlowman::process_new_square() {
 				if (ch->get_item_type() == Item::hacker) {
 					// common hacker -> Flowman will die
 					this->kill(Character::deadrevive);
-					logWindow.update_comment("Killed by hacker");
+                    gameStatus.dec_life();
+                    logWindow.update_lives(gameStatus.get_lives());
+                    logWindow.update_comment("Killed by hacker");
 				}else {
 					// weak hacker -> Hacker will die
 					ch->kill(Character::deadrevive);
-					logWindow.update_comment("Hacker killed");
+					gameStatus.inc_score(SCORE_FOR_HACKER);
+                    logWindow.update_score(gameStatus.get_score());
+                    logWindow.update_comment("Hacker killed");
 				}
 			}
 			if (dynamic_cast<ChBonus*>(ch) && ch->is_alive()) {
@@ -79,6 +83,10 @@ void ChFlowman::process_new_square() {
 			}
 		}
 	}
+    if (desk.get_item_type(get_hpos(), get_vpos()) == Item::food) {
+		gameStatus.inc_score(SCORE_FOR_FOOD);
+        logWindow.update_score(gameStatus.get_score());
+	}
 	desk.set_item_type(Item::empty, get_hpos(), get_vpos());
 }
 
@@ -90,3 +98,10 @@ unsigned int ChFlowman::get_revive_time() const {
 	return FLOWMANREVIVETIME;
 }
 
+void ChFlowman::update_character_status() {
+    if (gameStatus.get_lives() == 0) {
+        // FIXME display game over message and pause game
+        gameStatus.quit_game();
+    }
+
+}

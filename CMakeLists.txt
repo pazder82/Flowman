@@ -24,7 +24,9 @@ set(SOURCE_FILES
         main.cpp
         nc_exception.hpp
         TS_ncurses.cpp
-        TS_ncurses.hpp )
+        TS_ncurses.hpp
+        GameStatus.cpp
+        GameStatus.hpp)
 
 add_executable(Flowman ${SOURCE_FILES})
 link_directories(/usr/local/lib)

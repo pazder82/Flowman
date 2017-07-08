@@ -23,6 +23,7 @@
 #include "ChHacker.hpp"
 #include "ChBonus.hpp"
 #include "LogWindow.hpp"
+#include "GameStatus.hpp"
 
 using namespace std;
 
@@ -62,17 +63,18 @@ int main(int argc, char** argv) {
 	tsn.ungetch('a');
 	tsn.mgetch();
 
-	// Create desk object and LogWindow
+	// Create Desk, LogWindow and GameStatus objects
 	Desk desk(DESKHSIZE, DESKVSIZE, 0, 0);
 	LogWindow logWindow(DESKHSIZE, 1, 0, DESKVSIZE);
+	GameStatus gameStatus;
 
 	// Create Character objects
-	ChFlowman flowman(Item::flowman, desk, logWindow, 1);
-	ChHacker hacker1(Item::hacker, desk, logWindow, 0.5);
-	ChHacker hacker2(Item::hacker, desk, logWindow, 0.8);
-	ChHacker hacker3(Item::hacker, desk, logWindow, 1);
-	ChHacker hacker4(Item::hacker, desk, logWindow, 1);
-	ChHacker hacker5(Item::hacker, desk, logWindow, 1.2);
+	ChFlowman flowman(Item::flowman, desk, logWindow, gameStatus, 1);
+	ChHacker hacker1(Item::hacker, desk, logWindow, gameStatus, 0.5);
+	ChHacker hacker2(Item::hacker, desk, logWindow, gameStatus, 0.8);
+	ChHacker hacker3(Item::hacker, desk, logWindow, gameStatus, 1);
+	ChHacker hacker4(Item::hacker, desk, logWindow, gameStatus, 1);
+	ChHacker hacker5(Item::hacker, desk, logWindow, gameStatus, 1.2);
     ChBonus food(Item::bonus, desk, logWindow);
 
 	// Fill Character vector
@@ -88,7 +90,7 @@ int main(int argc, char** argv) {
 	}
 
     int keyp = KEY_F(2); // F2 (re)starts the game
-    while (keyp != KEY_F(10)) {
+    while (!gameStatus.get_quit_status()) {
         if (keyp == KEY_F(2)) { 
             // Start/restart game - kill all characters with no deadrevive before we init the desk
 			for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
@@ -99,8 +101,10 @@ int main(int argc, char** argv) {
             // Move Flowman
 			flowman.report_pressed_key(keyp);
 		}
-
     	keyp = tsn.mgetch();
+        if (keyp == KEY_F(10)) {
+            gameStatus.quit_game();
+        }
     }
 	for (Character* ch : Character::chvector) {
 		// terminate all character threads

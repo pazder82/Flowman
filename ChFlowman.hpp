@@ -16,13 +16,14 @@
 
 #include "Character.hpp"
 #include "LogWindow.hpp"
+#include "GameStatus.hpp"
 
 
 class ChFlowman : public Character {
 public:
 	RDC(ChFlowman);
-	ChFlowman(const Item::item_type_t it, Desk& desk, LogWindow& logWindow, const float speed_multiplier)
-			: logWindow(logWindow), Character(it, desk, speed_multiplier) {}
+	ChFlowman(const Item::item_type_t it, Desk& desk, LogWindow& logWindow, GameStatus& gameStatus, const float speed_multiplier)
+			: logWindow(logWindow), gameStatus(gameStatus), Character(it, desk, speed_multiplier) {}
     virtual ~ChFlowman();
 	void report_pressed_key(const int keyp);
 
@@ -30,7 +31,8 @@ private:
 	virtual Character::direction_t get_next_position() override; // return new position of character in next step
 	virtual void process_new_square() override;
 	LogWindow& logWindow;
-	void update_character_status() override {};
+	GameStatus& gameStatus;
+	void update_character_status() override;
 	virtual unsigned int get_revive_time() const override;
 
 private:

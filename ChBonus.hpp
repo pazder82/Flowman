@@ -12,7 +12,7 @@ class ChBonus : public Character{
 public:
     RDC(ChBonus);
     ChBonus(const Item::item_type_t it, Desk& desk, LogWindow& logWindow) : logWindow(logWindow), Character(it, desk, 1) {}
-    virtual ~ChBonus() { }
+    virtual ~ChBonus() = default;
     void restart_position() override;
 private:
     virtual direction_t get_next_position() override;
