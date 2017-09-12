@@ -41,6 +41,7 @@ public:
 	Item::item_type_t get_item_type(const square_coord_t sc) const;
 	void set_item_type(const Item::item_type_t it, const unsigned short h, const unsigned short v);
 	void set_item_type(const Item::item_type_t it, const square_coord_t sc);
+	unsigned int get_num_of_items(Item::item_type_t it) const;
 
 	void init_squares();
 	void refresh_win() { tsn.wrefresh(win); }

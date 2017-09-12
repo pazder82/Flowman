@@ -27,15 +27,18 @@ public:
     virtual ~ChHacker() = default;
 	void restart_position() override;
     void turn_into_weak_hacker();
+	virtual int get_speed() const override;
 
 private:
 	virtual Character::direction_t get_next_position() override;
 	virtual void process_new_square() override;
     void update_character_status() override;
-    void turn_into_common_hacker();
+
+private:
+	void turn_into_common_hacker();
     void turn_into_endingweak_hacker();
 
-	direction_t dir; /**< current direction of character */
+	direction_t dir = Character::right; /**< current direction of character */
 	bool check_next_position(const Character::direction_t dir) const;
 	virtual void move_character(const direction_t dir) override;
 	LogWindow& logWindow;

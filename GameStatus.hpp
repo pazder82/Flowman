@@ -21,16 +21,20 @@ public:
     void inc_lives(unsigned int l) { LOCK; lives += l; }
     void dec_life() { LOCK; lives--; }
     void dec_lives(unsigned int l) { LOCK; lives -= l; }
+    void restart_lives() { LOCK; lives = STARTING_LIVES; }
     void quit_game() {LOCK; quit = true; }
     unsigned int get_lives() const { return lives; }
-    unsigned int inc_score(unsigned int s) { LOCK; score += s; }
+    void inc_score(unsigned int s) { LOCK; score += s; }
     unsigned int get_score() const { return score; }
+    unsigned int get_level() const { return level > 0 ? level : 1; }
+    void inc_level() { LOCK; level++; }
     bool get_quit_status() const { return quit; }
 
 private:
     mutex mtx;
     unsigned int lives = STARTING_LIVES;
     unsigned int score = 0;
+    unsigned int level = 0;
     bool quit = false;
 };
 

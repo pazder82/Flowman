@@ -4,14 +4,19 @@
 
 #include "LogWindow.hpp"
 
-#define LIVESLABEL 3
-#define LIVESNUM 10
-#define SCORELABEL 13
-#define SCORENUM 20
-#define COMMENT 25
+// Horizontal offsets
+#define LEVELLABEL 3
+#define LEVELNUM 10
+#define LIVESLABEL 13
+#define LIVESNUM 20
+#define SCORELABEL 23
+#define SCORENUM 30
+#define COMMENT 35
 
 void LogWindow::draw() const {
     werase(win);
+    mvwprintw(win, 0, LEVELLABEL, "Level: ");
+    mvwprintw(win, 0, LEVELNUM, "1");
     mvwprintw(win, 0, LIVESLABEL, "Lives: ");
     mvwprintw(win, 0, LIVESNUM, "%u", STARTING_LIVES);
     mvwprintw(win, 0, SCORELABEL, "Score: ");
@@ -33,5 +38,10 @@ void LogWindow::update_score(unsigned int score) const {
 
 void LogWindow::update_lives(unsigned int lives) const {
     mvwprintw(win, 0, LIVESNUM, "%u", lives);
+    tsn.wrefresh(win);
+}
+
+void LogWindow::update_level(unsigned int level) const {
+    mvwprintw(win, 0, LEVELNUM, "%u", level);
     tsn.wrefresh(win);
 }

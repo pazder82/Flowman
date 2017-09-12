@@ -40,7 +40,7 @@ public:
 	unsigned short get_vpos() const { return vpos; }
 	square_coord_t get_pos() const { return { { hpos, vpos } }; }
 	Item::item_type_t get_item_type() const { return it; }
-	int get_speed() const { return speed; }
+	virtual int get_speed() const { return speed; }
 	bool joinable() const;
 	static vector<Character*> chvector; /**< Vector of references to all Character objects created */
 

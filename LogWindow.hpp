@@ -16,6 +16,7 @@ public:
     virtual ~LogWindow() = default;
 
     void draw() const override;
+    void update_level(unsigned int level) const;
     void update_score(unsigned int score) const;
     void update_lives(unsigned int lives) const;
     void update_comment(std::string s) const;

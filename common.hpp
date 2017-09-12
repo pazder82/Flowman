@@ -21,6 +21,7 @@
 
 /* Game constants */
 const unsigned int GAMESPEED = 200; // ms between each move
+const float SPEEDACCELERATORPERLEVEL = 1; // Character speed = init_speed * level * SPEEDACCELERATORPERLEVEL
 const unsigned int HACKERREVIVETIME = 30;  // GAMESPEED*REVIVETIME*speed ms to deadrevive dead hacker
 const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead flowman
 const unsigned int BONUSREVIVETIME = 100; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead bonus

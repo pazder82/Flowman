@@ -89,13 +89,20 @@ int main(int argc, char** argv) {
 		ch->run(); // start threads
 	}
 
-    int keyp = KEY_F(2); // F2 (re)starts the game
+    int keyp = 'a'; // unused key
+	bool game_started = true;
     while (!gameStatus.get_quit_status()) {
-        if (keyp == KEY_F(2)) { 
-            // Start/restart game - kill all characters with no deadrevive before we init the desk
+        if (game_started || (desk.get_num_of_items(Item::food) == 0)) {
+            // Start new level - kill all characters with no deadrevive before we init the desk
 			for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
 			desk.init_squares();
+			gameStatus.restart_lives();
+			gameStatus.inc_level();
 			logWindow.draw();
+			logWindow.update_level(gameStatus.get_level());
+			logWindow.update_lives(gameStatus.get_lives());
+			logWindow.update_score(gameStatus.get_score());
+			game_started = false;
 			for (Character* ch : Character::chvector) ch->kill(Character::deadrevive);
         } else if ((keyp == KEY_LEFT) || (keyp == KEY_RIGHT) || (keyp == KEY_UP) || (keyp == KEY_DOWN)) {
             // Move Flowman

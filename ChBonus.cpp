@@ -10,6 +10,7 @@ void ChBonus::restart_position() {
     uniform_int_distribution<unsigned short> randvdist(0, desk.get_vsize());
     while (!desk.is_valid_square(hpos = randhdist(generator), vpos = randvdist(generator)));
     ttl = BONUSLIFETIME;
+    desk.draw_item(Item::bonus, hpos, vpos);
     logWindow.update_comment("Bonus was born");
 }
 

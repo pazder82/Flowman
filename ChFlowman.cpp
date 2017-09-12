@@ -105,3 +105,7 @@ void ChFlowman::update_character_status() {
     }
 
 }
+
+int ChFlowman::get_speed() const {
+    return Character::get_speed() / (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
+}

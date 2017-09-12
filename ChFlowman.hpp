@@ -26,6 +26,7 @@ public:
 			: logWindow(logWindow), gameStatus(gameStatus), Character(it, desk, speed_multiplier) {}
     virtual ~ChFlowman();
 	void report_pressed_key(const int keyp);
+	virtual int get_speed() const override;
 
 private:
 	virtual Character::direction_t get_next_position() override; // return new position of character in next step

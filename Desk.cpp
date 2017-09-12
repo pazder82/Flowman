@@ -281,3 +281,20 @@ square_coord_t Desk::find_square_in_center() const {
 	}
 }
 
+/**
+ * Return number of it items in desk
+ * @param it
+ * @return
+ */
+unsigned int Desk::get_num_of_items(Item::item_type_t it) const {
+	unsigned int r = 0;
+	for (unsigned short h = 0; h < get_hsize(); h++) {
+		for (unsigned short v = 0; v < get_vsize(); v++) {
+			if (get_item_type(h, v) == it) {
+				r++;
+			}
+		}
+	}
+	return r;
+}
+

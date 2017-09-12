@@ -47,7 +47,6 @@ void Character::move_character(const direction_t dir) {
 		sc = {{ 1, 0 }};
 	}
 	if (desk.is_valid_square(hpos+sc.at(0), vpos+sc.at(1))) {
-		lock_guard<mutex> lck(mtx_nc);
 		desk.draw_item(desk.get_item_type(hpos, vpos), hpos, vpos); // replace the character with the square on desk
 		hpos = hpos+sc.at(0);
 		vpos = vpos+sc.at(1);
@@ -62,7 +61,6 @@ void Character::move_character(const direction_t dir) {
  */
 void Character::kill(const lifestatus_t tod) {
 	if (tod == deadrevive || tod == deadnorevive) {
-		lock_guard<mutex> lck(mtx);
 		this->lifestatus = tod;
 	}
 }
@@ -73,12 +71,12 @@ void Character::kill(const lifestatus_t tod) {
 void Character::run_i() {
 	int revive_count = get_revive_time();
 	while(!quit) {
+        unique_lock<mutex> lck(mtx);
 		if (lifestatus == alive) {
 			move_character(get_next_position());
 			process_new_square(); // call hook
 		}else if (lifestatus == deadrevive) {
 			if (revive_count <= 0) {
-				lock_guard<mutex> lck(mtx);
 				revive_count = get_revive_time();
 				lifestatus = alive;
 				restart_position();
@@ -87,7 +85,8 @@ void Character::run_i() {
 			}
 		}
         update_character_status(); // call hook
-		std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		lck.unlock();
+		std::this_thread::sleep_for(std::chrono::milliseconds(get_speed()));
 	}
 }
 
