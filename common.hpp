@@ -21,15 +21,16 @@
 
 /* Game constants */
 const unsigned int GAMESPEED = 200; // ms between each move
-const float SPEEDACCELERATORPERLEVEL = 1; // Character speed = init_speed * level * SPEEDACCELERATORPERLEVEL
+const float SPEEDACCELERATORPERLEVEL = 10; // Character move sleep time = Character::get_speed() - (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL)
 const unsigned int HACKERREVIVETIME = 30;  // GAMESPEED*REVIVETIME*speed ms to deadrevive dead hacker
 const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead flowman
 const unsigned int BONUSREVIVETIME = 100; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead bonus
 const unsigned int BONUSLIFETIME = 100; // GAMESPEED*LIFETIME*speed ms until bonus disappears
 const unsigned int WEAKHACKERLIFETIME = 50; // GAMESPEED*LIFETIME*speed ms until weak hacker turns into common hacker
 const unsigned int STARTING_LIVES = 3; // Number of lives in the beginning
-const unsigned int SCORE_FOR_FOOD = 1; // Score bonus for eaten food
-const unsigned int SCORE_FOR_HACKER = 25; // Score bonus for eaten hacker
+const unsigned int SCORE_FOR_FOOD = 1; // Score for eaten food
+const unsigned int SCORE_FOR_BONUS = 20; // Score for eaten bonus
+const unsigned int SCORE_FOR_HACKER = 100; // Score for eaten weak hacker
 
 /* Types */
 typedef std::array<int,2> square_coord_t;
@@ -58,7 +59,7 @@ const unsigned short SCOREHOFFSET = 0; /**< horizontal offset of score window */
 const unsigned short SCOREVOFFSET = DESKVSIZE; /**< vertical offset of score window */
 
 /* Labyrinth parameters */
-const unsigned short MAX_WALL_PERCENTS_ALLOWED = 65; /**< In the labyrinth the wall squares can be assigned to less than MAX_WALLS_ALLOWED percents of all squares */
+const unsigned short MAX_WALL_PERCENTS_ALLOWED = 95; /**< In the labyrinth the wall squares can be assigned to less than MAX_WALLS_ALLOWED percents of all squares */
 const unsigned short CHANGE_DIR_LIKEHOOD = 10; /**< The higher the number, the less likely the tunnel direction change during generation */
 
 /* Macros */

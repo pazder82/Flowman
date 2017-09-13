@@ -138,6 +138,6 @@ void ChHacker::update_character_status() {
 }
 
 int ChHacker::get_speed() const {
-	return Character::get_speed() / (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
+	return Character::get_speed() - (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
 }
 

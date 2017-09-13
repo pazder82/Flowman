@@ -37,9 +37,35 @@ void init_ncurses() {
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
-    timeout(-1); // use blocking getch
+    timeout(10); // block getch for X ms
     start_color();
     curs_set(0);
+}
+
+/**
+ * Init game parameters based on game level
+ */
+void init_game(GameStatus& gameStatus, Desk& desk, LogWindow& logWindow) {
+	// Start new level - kill all characters with no deadrevive before we init the desk
+	for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
+	desk.init_squares(gameStatus.get_level());
+	gameStatus.restart_lives();
+	gameStatus.inc_level();
+	logWindow.draw();
+	logWindow.update_level(gameStatus.get_level());
+	logWindow.update_lives(gameStatus.get_lives());
+	logWindow.update_score(gameStatus.get_score());
+	unsigned short num_of_hackers = 0;
+	for (Character* ch : Character::chvector) {
+		// revive number of hackers equal to level - 1
+		if (dynamic_cast<ChHacker*>(ch)) {
+			if (++num_of_hackers < gameStatus.get_level()) {
+				ch->kill(Character::deadrevive);
+			}
+		} else {
+			ch->kill(Character::deadrevive);
+		}
+	}
 }
 
 /**
@@ -79,36 +105,28 @@ int main(int argc, char** argv) {
 
 	// Fill Character vector
 	Character::chvector.push_back(&flowman);
-	Character::chvector.push_back(&hacker1);
-	Character::chvector.push_back(&hacker2);
-	Character::chvector.push_back(&hacker3);
-	Character::chvector.push_back(&hacker4);
-	Character::chvector.push_back(&hacker5);
 	Character::chvector.push_back(&food);
+	Character::chvector.push_back(&hacker5);
+	Character::chvector.push_back(&hacker4);
+	Character::chvector.push_back(&hacker3);
+	Character::chvector.push_back(&hacker2);
+	Character::chvector.push_back(&hacker1);
 	for (Character* ch : Character::chvector) {
 		ch->run(); // start threads
 	}
 
     int keyp = 'a'; // unused key
-	bool game_started = true;
     while (!gameStatus.get_quit_status()) {
-        if (game_started || (desk.get_num_of_items(Item::food) == 0)) {
+        if (gameStatus.get_start_new_level_status()) {
             // Start new level - kill all characters with no deadrevive before we init the desk
-			for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
-			desk.init_squares();
-			gameStatus.restart_lives();
-			gameStatus.inc_level();
-			logWindow.draw();
-			logWindow.update_level(gameStatus.get_level());
-			logWindow.update_lives(gameStatus.get_lives());
-			logWindow.update_score(gameStatus.get_score());
-			game_started = false;
-			for (Character* ch : Character::chvector) ch->kill(Character::deadrevive);
+            init_game(gameStatus, desk, logWindow);
         } else if ((keyp == KEY_LEFT) || (keyp == KEY_RIGHT) || (keyp == KEY_UP) || (keyp == KEY_DOWN)) {
             // Move Flowman
 			flowman.report_pressed_key(keyp);
 		}
-    	keyp = tsn.mgetch();
+        if (!gameStatus.get_start_new_level_status() && !gameStatus.get_quit_status()) {
+			keyp = tsn.mgetch();
+        }
         if (keyp == KEY_F(10)) {
             gameStatus.quit_game();
         }

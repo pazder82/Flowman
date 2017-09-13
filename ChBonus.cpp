@@ -31,6 +31,10 @@ unsigned int ChBonus::get_revive_time() const {
  */
 void ChBonus::update_character_status() {
     ttl--;
+    if (is_alive()) {
+        // redraw bonus as it could have been erased by hacker moving over it
+        desk.draw_item(Item::bonus, hpos, vpos);
+    }
     if (ttl == 0) {
         kill(deadrevive);
         desk.draw_item(desk.get_item_type(hpos, vpos), hpos, vpos);

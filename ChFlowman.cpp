@@ -74,6 +74,8 @@ void ChFlowman::process_new_square() {
 			if (dynamic_cast<ChBonus*>(ch) && ch->is_alive()) {
 				// it is food -> eat it (== kill it) and turn all hackers into weak hackers
 				ch->kill(Character::deadrevive);
+                gameStatus.inc_score(SCORE_FOR_BONUS);
+				logWindow.update_score(gameStatus.get_score());
 				logWindow.update_comment("Ate bonus");
                 for (auto ch2 : chvector) {
                     if (dynamic_cast<ChHacker*>(ch2) && ch2->is_alive()) {
@@ -103,9 +105,13 @@ void ChFlowman::update_character_status() {
         // FIXME display game over message and pause game
         gameStatus.quit_game();
     }
+    if (desk.get_num_of_squares_of_type(Item::food) == 0) {
+		// FIXME display new level message and pause game
+		gameStatus.start_new_level();
+    }
 
 }
 
 int ChFlowman::get_speed() const {
-    return Character::get_speed() / (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
+    return Character::get_speed() - (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
 }

@@ -37,13 +37,13 @@ public:
 	void draw() const override;
 	void draw_item(const Item::item_type_t it, const unsigned short h, const unsigned short v) const;
 
+	unsigned short get_num_of_squares_of_type(const Item::item_type_t it) const;
 	Item::item_type_t get_item_type(const unsigned short h, const unsigned short v) const;
 	Item::item_type_t get_item_type(const square_coord_t sc) const;
 	void set_item_type(const Item::item_type_t it, const unsigned short h, const unsigned short v);
 	void set_item_type(const Item::item_type_t it, const square_coord_t sc);
-	unsigned int get_num_of_items(Item::item_type_t it) const;
 
-	void init_squares();
+	void init_squares(unsigned short wall_coef);
 	void refresh_win() { tsn.wrefresh(win); }
 
 	bool is_valid_square(const unsigned short hpos, const unsigned short vpos) const;
@@ -60,8 +60,7 @@ private:
 	square_coord_t get_next_tunnel_square(square_coord_t sc);
 	void update_direction(void);
 	bool is_oposite_dir(const direction_t d1, const direction_t d2) const;
-	unsigned short get_num_of_squares_of_type(const Item::item_type_t it) const;
-	
+
 };
 
 #endif /* DESK_HPP */

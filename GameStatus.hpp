@@ -27,8 +27,10 @@ public:
     void inc_score(unsigned int s) { LOCK; score += s; }
     unsigned int get_score() const { return score; }
     unsigned int get_level() const { return level > 0 ? level : 1; }
-    void inc_level() { LOCK; level++; }
+    void inc_level() { LOCK; level++; start_new_level_status = false; }
     bool get_quit_status() const { return quit; }
+    bool get_start_new_level_status() const { return start_new_level_status; }
+    void start_new_level() { LOCK; start_new_level_status = true; }
 
 private:
     mutex mtx;
@@ -36,6 +38,7 @@ private:
     unsigned int score = 0;
     unsigned int level = 0;
     bool quit = false;
+    bool start_new_level_status = true;
 };
 
 

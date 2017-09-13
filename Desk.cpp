@@ -45,8 +45,9 @@ Desk::Desk(const unsigned short hsize, const unsigned short vsize, const unsigne
 /**
  * Init squares values. This method randomly generates new labyrinth.
  * In the labyrinth, no dead ends are allowed.
+ * Percent of walls < MAX_WALL_PERCENTS_ALLOWED / wall_coef
 */
-void Desk::init_squares() {
+void Desk::init_squares(unsigned short wall_coef) {
     unsigned short hsize = get_hsize();
     unsigned short vsize = get_vsize();
 
@@ -64,7 +65,7 @@ void Desk::init_squares() {
 	unsigned short wall_squares = get_num_of_squares_of_type(Item::wall);
 	square_coord_t sc = { { hsize/2, vsize/2 } }; // start in the center of the first quadrant
 	square_coord_t sc_old = sc;
-	while ((wall_squares*100/total_squares > MAX_WALL_PERCENTS_ALLOWED) || (number_of_neighbors(Item::food, sc_old) < 2)) {
+	while ((wall_squares*100/total_squares > (MAX_WALL_PERCENTS_ALLOWED - (wall_coef * 10))) || (number_of_neighbors(Item::food, sc_old) < 2)) {
 		squares[sc.at(0)][sc.at(1)] = items.at(Item::food);
 		squares[hsize - sc.at(0) - 1][sc.at(1)] = items.at(Item::food);
 		squares[sc.at(0)][vsize - sc.at(1) - 1] = items.at(Item::food);
@@ -281,20 +282,4 @@ square_coord_t Desk::find_square_in_center() const {
 	}
 }
 
-/**
- * Return number of it items in desk
- * @param it
- * @return
- */
-unsigned int Desk::get_num_of_items(Item::item_type_t it) const {
-	unsigned int r = 0;
-	for (unsigned short h = 0; h < get_hsize(); h++) {
-		for (unsigned short v = 0; v < get_vsize(); v++) {
-			if (get_item_type(h, v) == it) {
-				r++;
-			}
-		}
-	}
-	return r;
-}
 
