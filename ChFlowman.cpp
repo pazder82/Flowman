@@ -13,7 +13,7 @@
 
 #include "ChFlowman.hpp"
 #include "ChHacker.hpp"
-#include "ChBonus.hpp"
+#include "ChEvidence.hpp"
 
 ChFlowman::~ChFlowman() {
 }
@@ -71,7 +71,7 @@ void ChFlowman::process_new_square() {
                     logWindow.update_comment("Hacker killed");
 				}
 			}
-			if (dynamic_cast<ChBonus*>(ch) && ch->is_alive()) {
+			if (dynamic_cast<ChEvidence*>(ch) && ch->is_alive()) {
 				// it is food -> eat it (== kill it) and turn all hackers into weak hackers
 				ch->kill(Character::deadrevive);
                 gameStatus.inc_score(SCORE_FOR_BONUS);
@@ -106,7 +106,6 @@ void ChFlowman::update_character_status() {
         gameStatus.quit_game();
     }
     if (desk.get_num_of_squares_of_type(Item::food) == 0) {
-		// FIXME display new level message and pause game
 		gameStatus.start_new_level();
     }
 

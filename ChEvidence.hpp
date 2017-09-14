@@ -8,11 +8,11 @@
 #include "Character.hpp"
 #include "LogWindow.hpp"
 
-class ChBonus : public Character{
+class ChEvidence : public Character{
 public:
-    RDC(ChBonus);
-    ChBonus(const Item::item_type_t it, Desk& desk, LogWindow& logWindow) : logWindow(logWindow), Character(it, desk, 1) {}
-    virtual ~ChBonus() = default;
+    RDC(ChEvidence);
+    ChEvidence(const Item::item_type_t it, Desk& desk, LogWindow& logWindow) : logWindow(logWindow), Character(it, desk, 1) {}
+    virtual ~ChEvidence() = default;
     void restart_position() override;
 private:
     virtual direction_t get_next_position() override;

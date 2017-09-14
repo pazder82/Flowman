@@ -10,8 +10,8 @@ set(SOURCE_FILES
         ChFlowman.hpp
         ChHacker.cpp
         ChHacker.hpp
-        ChBonus.cpp
-        ChBonus.hpp
+        ChEvidence.cpp
+        ChEvidence.hpp
         common.hpp
         Desk.cpp
         Desk.hpp
@@ -26,7 +26,9 @@ set(SOURCE_FILES
         TS_ncurses.cpp
         TS_ncurses.hpp
         GameStatus.cpp
-        GameStatus.hpp)
+        GameStatus.hpp
+        PopupWindow.cpp
+        PopupWindow.hpp)
 
 add_executable(Flowman ${SOURCE_FILES})
 link_directories(/usr/local/lib)

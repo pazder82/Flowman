@@ -21,9 +21,10 @@
 #include "Character.hpp"
 #include "ChFlowman.hpp"
 #include "ChHacker.hpp"
-#include "ChBonus.hpp"
+#include "ChEvidence.hpp"
 #include "LogWindow.hpp"
 #include "GameStatus.hpp"
+#include "PopupWindow.hpp"
 
 using namespace std;
 
@@ -42,19 +43,55 @@ void init_ncurses() {
     curs_set(0);
 }
 
+string get_level_message(unsigned int level) {
+	switch (level) {
+        case 1 :
+            return "\
+       Welcome Network security engineer!\n\n\
+Your task is to monitor your network. Visit\n\
+all squares in the labyrinth of your network.";
+		case 2 :
+			return "\
+Enginner,\n\n\
+You're not alone in your network! There is\n\
+a hacker with you. You must avoid him.\n\
+The hacker can be tracked and removed,\n\
+if you find an evidence. When evidence found\n\
+the hacker turns green and can be removed if\n\
+you catch him. But stay alarmed! The hacker\n\
+will notice you shortly. Once he turns pink\n\
+you can still remove him, but he will turn\n\
+back red in a moment!";
+		default:
+			return "Hello!";
+	}
+}
+
 /**
  * Init game parameters based on game level
  */
 void init_game(GameStatus& gameStatus, Desk& desk, LogWindow& logWindow) {
-	// Start new level - kill all characters with no deadrevive before we init the desk
+	// Start new level
+	// Kill all characters with no deadrevive before we init the desk
 	for (Character* ch : Character::chvector) ch->kill(Character::deadnorevive);
-	desk.init_squares(gameStatus.get_level());
-	gameStatus.restart_lives();
-	gameStatus.inc_level();
+
+    desk.init_squares(gameStatus.get_level()); // Generate new labyrinth
+	gameStatus.restart_lives(); // Reset number of lives on default value
+	gameStatus.inc_level(); // Increase level number
+
+    // Draw window with info about level, no. of lives and score
 	logWindow.draw();
 	logWindow.update_level(gameStatus.get_level());
 	logWindow.update_lives(gameStatus.get_lives());
 	logWindow.update_score(gameStatus.get_score());
+
+    // Display message box with level info
+    PopupWindow popupWindow(50, 20, 15, 2, get_level_message(gameStatus.get_level()));
+	popupWindow.draw();
+	while(tsn.mgetch() == ERR); // wait for any key
+    desk.draw(); // Hide message box
+
+    // Start level - revive all characters
 	unsigned short num_of_hackers = 0;
 	for (Character* ch : Character::chvector) {
 		// revive number of hackers equal to level - 1
@@ -101,11 +138,11 @@ int main(int argc, char** argv) {
 	ChHacker hacker3(Item::hacker, desk, logWindow, gameStatus, 1);
 	ChHacker hacker4(Item::hacker, desk, logWindow, gameStatus, 1);
 	ChHacker hacker5(Item::hacker, desk, logWindow, gameStatus, 1.2);
-    ChBonus food(Item::bonus, desk, logWindow);
+    ChEvidence evidence(Item::bonus, desk, logWindow);
 
 	// Fill Character vector
 	Character::chvector.push_back(&flowman);
-	Character::chvector.push_back(&food);
+	Character::chvector.push_back(&evidence);
 	Character::chvector.push_back(&hacker5);
 	Character::chvector.push_back(&hacker4);
 	Character::chvector.push_back(&hacker3);
@@ -124,9 +161,7 @@ int main(int argc, char** argv) {
             // Move Flowman
 			flowman.report_pressed_key(keyp);
 		}
-        if (!gameStatus.get_start_new_level_status() && !gameStatus.get_quit_status()) {
-			keyp = tsn.mgetch();
-        }
+		keyp = tsn.mgetch();
         if (keyp == KEY_F(10)) {
             gameStatus.quit_game();
         }
