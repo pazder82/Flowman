@@ -35,6 +35,7 @@ public:
 	void terminate(); /** terminate character's thread */
 	void run(); /**< start character's thread */
 	void kill(const lifestatus_t tod); /**< set status of character */
+
 	bool is_alive() const; /**< return true, if character lifestatus_t == alive */
 	unsigned short get_hpos() const { return hpos; }
 	unsigned short get_vpos() const { return vpos; }
@@ -48,6 +49,7 @@ protected:
 	virtual direction_t get_next_position() = 0; /**< return new position of character in next step */
 	virtual void process_new_square() = 0; /**< let character know it moved to the new square so it has to be processed */
 	virtual void update_character_status() = 0; /**< character has to update its status if necessary */
+	virtual void animate_character() = 0; /**< perform character animation step */
 	virtual void move_character(const direction_t dir);
     virtual unsigned int get_revive_time() const = 0; /** return deadrevive time of character */
     void change_item_type(Item::item_type_t it); /** change item type of character */

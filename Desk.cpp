@@ -37,7 +37,8 @@ Desk::Desk(const unsigned short hsize, const unsigned short vsize, const unsigne
         items.insert(make_pair(Item::flowman, Item(ACS_DIAMOND, Item::flowman, COLOR_BLACK, COLOR_YELLOW)));
         items.insert(make_pair(Item::hacker, Item(ACS_DIAMOND, Item::hacker, COLOR_BLACK, COLOR_RED)));
         items.insert(make_pair(Item::weakhacker, Item(ACS_DIAMOND, Item::hacker, COLOR_BLACK, COLOR_GREEN)));
-    	items.insert(make_pair(Item::endingweakhacker, Item(ACS_DIAMOND, Item::hacker, COLOR_BLACK, COLOR_MAGENTA)));
+    	items.insert(make_pair(Item::endingweakhackerweak, Item(ACS_DIAMOND, Item::hacker, COLOR_BLACK, COLOR_GREEN)));
+		items.insert(make_pair(Item::endingweakhackerhacker, Item(ACS_DIAMOND, Item::hacker, COLOR_BLACK, COLOR_RED)));
         items.insert(make_pair(Item::food, Item('.', Item::food, COLOR_WHITE, COLOR_BLUE)));
     }
 

@@ -118,14 +118,14 @@ void ChHacker::turn_into_common_hacker() {
  * Turn weak hacker into item_type to warn user that this one is changing into common soon
  */
 void ChHacker::turn_into_endingweak_hacker() {
-    change_item_type(Item::endingweakhacker);
+    change_item_type(Item::endingweakhackerweak);
 }
 
 /**
  * Update weak hacker status if necessary
  */
 void ChHacker::update_character_status() {
-    if ((get_item_type() == Item::weakhacker) || (get_item_type() == Item::endingweakhacker)) {
+    if (is_weak()) {
         // countdown weakhacker lifetime and once it's zero, turn him back into the common dangerous hacker form
         ttl--;
         if (ttl < WEAKHACKERLIFETIME/3){
@@ -139,5 +139,26 @@ void ChHacker::update_character_status() {
 
 int ChHacker::get_speed() const {
 	return Character::get_speed() - (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL);
+}
+
+bool ChHacker::is_weak() {
+    Item::item_type_t t = get_item_type();
+	return (t == Item::weakhacker) || (t == Item::endingweakhackerweak) || (t == Item::endingweakhackerhacker);
+}
+
+bool ChHacker::is_endingweak() {
+    Item::item_type_t t = get_item_type();
+    return (t == Item::endingweakhackerweak) || (t == Item::endingweakhackerhacker);
+}
+
+void ChHacker::animate_character() {
+    if (is_endingweak()) {
+		if (get_item_type() == Item::endingweakhackerweak) {
+			change_item_type(Item::endingweakhackerhacker);
+		} else {
+			change_item_type(Item::endingweakhackerweak);
+		}
+		desk.refresh_win();
+	}
 }
 

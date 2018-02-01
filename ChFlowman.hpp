@@ -34,6 +34,9 @@ private:
 	LogWindow& logWindow;
 	GameStatus& gameStatus;
 	void update_character_status() override;
+	void animate_character() override {};
+
+private:
 	virtual unsigned int get_revive_time() const override;
 
 private:

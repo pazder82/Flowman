@@ -47,23 +47,24 @@ string get_level_message(unsigned int level) {
 	switch (level) {
         case 1 :
             return "\
-       Welcome Network security engineer!\n\n\
-Your task is to monitor your network. Visit\n\
-all squares in the labyrinth of your network.";
+                Level 1\n\n\
+                Warm up!";
 		case 2 :
 			return "\
-Enginner,\n\n\
+                Level 2\n\n\
 You're not alone in your network! There is\n\
 a hacker with you. You must avoid him.\n\
 The hacker can be tracked and removed,\n\
 if you find an evidence. When evidence found\n\
 the hacker turns green and can be removed if\n\
 you catch him. But stay alarmed! The hacker\n\
-will notice you shortly. Once he turns pink\n\
-you can still remove him, but he will turn\n\
-back red in a moment!";
+will notice you shortly. Once he starts\n\
+alternate red and green, you can still remove\n\
+him, but he will turn back red in a moment!";
 		default:
-			return "Hello!";
+			return "\
+               Level "+to_string(level)+"\n\n\
+   More hackers and more speed!";
 	}
 }
 

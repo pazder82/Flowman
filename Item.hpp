@@ -26,7 +26,7 @@ extern TS_ncurses tsn;
 
 class Item {
     public:
-        enum item_type_t { empty, food, wall, hacker, weakhacker, endingweakhacker, flowman, bonus };
+        enum item_type_t { empty, food, wall, hacker, weakhacker, endingweakhackerweak, endingweakhackerhacker, flowman, bonus };
 
         Item() = default;
         Item(const Item&) = default;
@@ -40,7 +40,6 @@ class Item {
         void PrintItem(WINDOW *win, const int h, const int v, const int count) const;
         virtual ~Item() {};
         enum item_type_t get_item_type() const;
-        static void reset_color_pair();
     private:
         int symbol = ACS_BOARD; /**< character to print for this item */
         int color_pair = 1; /** ncurses color_pair - should be unique per Item */

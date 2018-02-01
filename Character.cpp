@@ -12,14 +12,11 @@
  */
 
 #include "Character.hpp"
-#include "Item.hpp"
-#include "ChFlowman.hpp"
 
 using namespace std;
 
 vector<Character*> Character::chvector;
 mutex Character::mtx;
-mutex Character::mtx_nc;
 
 /**
  * Construct Character
@@ -28,7 +25,8 @@ mutex Character::mtx_nc;
  * @param v Initial vertical coordinate
  * @param speed_multiplier Character speed
  */
-Character::Character(const Item::item_type_t it, Desk& desk, const float speed_multiplier) : it(it), desk(desk), speed(speed_multiplier*GAMESPEED) {
+Character::Character(const Item::item_type_t it, Desk& desk, const float speed_multiplier) : it(it), desk(desk), speed(
+        static_cast<int>(speed_multiplier)*GAMESPEED) {
 }
 
 /**
@@ -36,7 +34,7 @@ Character::Character(const Item::item_type_t it, Desk& desk, const float speed_m
  * @param dir Direction 
  */
 void Character::move_character(const direction_t dir) {
-	square_coord_t sc;
+	square_coord_t sc = {{ 0, 0 }};
 	if (dir == up) {
 		sc = {{ 0, -1 }};	
 	}else if (dir == down) {
@@ -70,23 +68,36 @@ void Character::kill(const lifestatus_t tod) {
  */
 void Character::run_i() {
 	int revive_count = get_revive_time();
+	std::chrono::system_clock::time_point laststatus = std::chrono::system_clock::now(); // keep timepoint of the last character status update
+    std::chrono::system_clock::time_point lastanim = std::chrono::system_clock::now(); // keep timepoint of the last character animation update
 	while(!quit) {
-        unique_lock<mutex> lck(mtx);
-		if (lifestatus == alive) {
-			move_character(get_next_position());
-			process_new_square(); // call hook
-		}else if (lifestatus == deadrevive) {
-			if (revive_count <= 0) {
-				revive_count = get_revive_time();
-				lifestatus = alive;
-				restart_position();
-			}else {
-				revive_count -= 1;
+        std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+		// Update status of character
+		if (now - laststatus > std::chrono::milliseconds(get_speed())) {
+			unique_lock<mutex> lck(mtx);
+			if (lifestatus == alive) {
+				move_character(get_next_position());
+				process_new_square(); // call hook
+			} else if (lifestatus == deadrevive) {
+				if (revive_count <= 0) {
+					revive_count = get_revive_time();
+					lifestatus = alive;
+					restart_position();
+				} else {
+					revive_count -= 1;
+				}
 			}
+			update_character_status(); // call hook
+			lck.unlock();
+            laststatus = std::chrono::system_clock::now();
 		}
-        update_character_status(); // call hook
-		lck.unlock();
-		std::this_thread::sleep_for(std::chrono::milliseconds(get_speed()));
+		if (now - lastanim > std::chrono::milliseconds(ANIMSPEED)) {
+            unique_lock<mutex> lck(mtx);
+            animate_character();
+            lck.unlock();
+            lastanim = std::chrono::system_clock::now();
+        }
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }
 
