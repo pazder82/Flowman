@@ -14,6 +14,7 @@
 #include "ChFlowman.hpp"
 #include "ChHacker.hpp"
 #include "ChEvidence.hpp"
+#include "PopupWindow.hpp"
 
 ChFlowman::~ChFlowman() {
 }
@@ -76,7 +77,7 @@ void ChFlowman::process_new_square() {
 				ch->kill(Character::deadrevive);
                 gameStatus.inc_score(SCORE_FOR_BONUS);
 				logWindow.update_score(gameStatus.get_score());
-				logWindow.update_comment("Ate bonus");
+				logWindow.update_comment("Evidence analyzed");
                 for (auto ch2 : chvector) {
                     if (dynamic_cast<ChHacker*>(ch2) && ch2->is_alive()) {
                         dynamic_cast<ChHacker*>(ch2)->turn_into_weak_hacker();
@@ -102,7 +103,10 @@ unsigned int ChFlowman::get_revive_time() const {
 
 void ChFlowman::update_character_status() {
     if (gameStatus.get_lives() == 0) {
-        // FIXME display game over message and pause game
+		PopupWindow popupWindow(15, 7, 35, 9, "Game Over!");
+        popupWindow.draw();
+        while(tsn.mgetch() == ERR); // wait for any key
+		tsn.ungetch(KEY_F(10));
         gameStatus.quit_game();
     }
     if (desk.get_num_of_squares_of_type(Item::food) == 0) {

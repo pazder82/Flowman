@@ -11,7 +11,7 @@ void ChEvidence::restart_position() {
     while (!desk.is_valid_square(hpos = randhdist(generator), vpos = randvdist(generator)));
     ttl = BONUSLIFETIME;
     desk.draw_item(Item::bonus, hpos, vpos);
-    logWindow.update_comment("Bonus was born");
+    logWindow.update_comment("Evidence found");
 }
 
 Character::direction_t ChEvidence::get_next_position() {
@@ -38,7 +38,7 @@ void ChEvidence::update_character_status() {
         if (ttl == 0) {
             kill(deadrevive);
             desk.draw_item(desk.get_item_type(hpos, vpos), hpos, vpos);
-            logWindow.update_comment("Bonus has died");
+            logWindow.update_comment("Evidence lost");
         }
     }
 }

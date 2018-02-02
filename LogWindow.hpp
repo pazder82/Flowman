@@ -20,6 +20,7 @@ public:
     void update_score(unsigned int score) const;
     void update_lives(unsigned int lives) const;
     void update_comment(std::string s) const;
+    void update_help(std::string s) const;
 
 };
 

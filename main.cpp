@@ -47,24 +47,16 @@ string get_level_message(unsigned int level) {
 	switch (level) {
         case 1 :
             return "\
-                Level 1\n\n\
-                Warm up!";
+            Level 1\n\n\
+           Warm up!";
 		case 2 :
 			return "\
-                Level 2\n\n\
-You're not alone in your network! There is\n\
-a hacker with you. You must avoid him.\n\
-The hacker can be tracked and removed,\n\
-if you find an evidence. When evidence found\n\
-the hacker turns green and can be removed if\n\
-you catch him. But stay alarmed! The hacker\n\
-will notice you shortly. Once he starts\n\
-alternate red and green, you can still remove\n\
-him, but he will turn back red in a moment!";
+            Level 2\n\n\
+  More hackers and more speed!";
 		default:
 			return "\
-               Level "+to_string(level)+"\n\n\
-   More hackers and more speed!";
+            Level "+to_string(level)+"\n\n\
+More hackers and more speed!";
 	}
 }
 
@@ -85,9 +77,10 @@ void init_game(GameStatus& gameStatus, Desk& desk, LogWindow& logWindow) {
 	logWindow.update_level(gameStatus.get_level());
 	logWindow.update_lives(gameStatus.get_lives());
 	logWindow.update_score(gameStatus.get_score());
+    logWindow.update_help("Arrows: change direction, F10: quit game");
 
     // Display message box with level info
-    PopupWindow popupWindow(50, 20, 15, 2, get_level_message(gameStatus.get_level()));
+    PopupWindow popupWindow(35, 10, 20, 7, get_level_message(gameStatus.get_level()));
 	popupWindow.draw();
 	while(tsn.mgetch() == ERR); // wait for any key
     desk.draw(); // Hide message box
@@ -97,7 +90,7 @@ void init_game(GameStatus& gameStatus, Desk& desk, LogWindow& logWindow) {
 	for (Character* ch : Character::chvector) {
 		// revive number of hackers equal to level - 1
 		if (dynamic_cast<ChHacker*>(ch)) {
-			if (++num_of_hackers < gameStatus.get_level()) {
+			if (++num_of_hackers <= gameStatus.get_level()) {
 				ch->kill(Character::deadrevive);
 			}
 		} else {

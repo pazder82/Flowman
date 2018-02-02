@@ -24,7 +24,15 @@ void LogWindow::draw() const {
     tsn.wrefresh(win);
 }
 
+void LogWindow::update_help(std::string s) const {
+    wmove(win, 0, COMMENT);
+    wclrtoeol(win);
+    mvwprintw(win, 0, COMMENT, "%s", s.c_str());
+    tsn.wrefresh(win);
+}
+
 void LogWindow::update_comment(std::string s) const {
+    return; // comments are not used in final version
     wmove(win, 0, COMMENT);
     wclrtoeol(win);
     mvwprintw(win, 0, COMMENT, "%s", s.c_str());

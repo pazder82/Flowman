@@ -21,7 +21,7 @@
 
 /* Game constants */
 const unsigned int GAMESPEED = 200; // ms between each move
-const unsigned int ANIMSPEED = 10;  // ms between each animation step
+const unsigned int ANIMSPEED = 1000;  // ms between each animation step
 const float SPEEDACCELERATORPERLEVEL = 10; // Character move sleep time = Character::get_speed() - (gameStatus.get_level() * SPEEDACCELERATORPERLEVEL)
 const unsigned int HACKERREVIVETIME = 30;  // GAMESPEED*REVIVETIME*speed ms to deadrevive dead hacker
 const unsigned int FLOWMANREVIVETIME = 2; // GAMESPEED*REVIVETIME*speed ms to deadrevive dead flowman
